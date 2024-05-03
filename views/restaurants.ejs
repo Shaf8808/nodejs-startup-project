@@ -16,6 +16,10 @@
       <p>We found <%= numberOfRestaurants %> restaurants</p>
       <% } %>
       <p>Find your next favorite restaurants with help of our other users!</p>
+      <form action="/restaurants" method="GET">
+        <input type="hidden" value="<%= nextOrder %>" name="order" />
+        <button class="btn">Change order</button>
+      </form>
       <ul id="restaurants-list">
         <!-- The first restaurants is the key in the rest.-item file,
         the second is the const variable below -->

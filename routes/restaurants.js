@@ -7,13 +7,34 @@ const router = express.Router();
 
 router.get("/restaurants", (req, res) => {
   const storedRestaurants = resData.getStoredRestaurants();
+  let order = req.query.order; // This is the name attribute on the input field for the change order button
+  let nextOrder = "desc";
 
-  storedRestaurants.sort((resA, resB) => {});
+  // This is the default order when it is not set to anything
+  if (order !== "asc" && order !== "desc") {
+    order = "asc";
+  }
+
+  // Toggles the value of nextOrder
+  if (order === "desc") {
+    nextOrder = "asc";
+  }
+
+  storedRestaurants.sort((resA, resB) => {
+    if (
+      (order === "asc" && resA.name > resB.name) || // This means or
+      (order === "desc" && resB.name > resA.name)
+    ) {
+      return 1;
+    }
+    return -1;
+  });
 
   res.render("restaurants", {
     numberOfRestaurants: storedRestaurants.length,
     restaurants: storedRestaurants,
-  });
+    nextOrder: nextOrder, // The first nextOrder is the key used in the
+  }); // restaurants ejs template file and the second is the let variable above
 });
 
 router.get("/restaurants/:id", (req, res) => {
